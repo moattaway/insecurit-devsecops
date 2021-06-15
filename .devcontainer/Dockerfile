@@ -29,3 +29,10 @@ CMD [ "sleep", "infinity" ]
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+USER root
+RUN # AMD64
+RUN curl -s -L "https://github.com/loft-sh/devspace/releases/latest" | sed -nE 's!.*"([^"]*devspace-linux-amd64)".*!https://github.com\1!p' | xargs -n 1 curl -L -o devspace && chmod +x devspace;
+RUN sudo install devspace /usr/local/bin
+RUN git clone https://github.com/loft-sh/devspace-quickstart-nodejs && cd devspace-quickstart-nodejs
+WORKDIR /devspace-quickstart-nodejs
+RUN devspace init
